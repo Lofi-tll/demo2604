@@ -1,28 +1,42 @@
 package com.org.demoservice;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.org.demoentity.Book;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
+
 /**
-* @author MR
+* @author Lofi
 * @description 针对表【book(图书表)】的数据库操作Service
 * @createDate 2026-04-08 14:14:15
 */
 public interface BookService extends IService<Book> {
 
-    Book findById(Long id);
+    //查询类接口
 
-    List<Book> findByName(String name);
+    Book findById(Long id);
 
     Book findByIsbn(String isbn);
 
-    List<Book> findByAuthor(String author);
+    Page<Book> pageBooks(
+            Integer pageNum,
+            Integer pageSize,
+            String keyword,
+            String category
+    );
 
-    List<Book> findByCategory(Integer category);
+    //增删改类接口
 
-    List<Book> findByPublisher(String publisher);
+    void addBook(Book book);
 
-    List<Book> findAllBook();
+    void addBooks(List<Book> books);
+
+    void updateBook(Book book);
+
+    void deleteBook(Long id);
+
+    void deleteBooks(List<Long> ids);
+
 }

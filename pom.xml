@@ -31,7 +31,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <mybatis-plus.version>3.5.10</mybatis-plus.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <lombok.version>1.18.34</lombok.version>
         <knife4j.version>4.5.0</knife4j.version>
         <spring-boot-admin.version>3.3.6</spring-boot-admin.version>
@@ -79,6 +79,16 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
 

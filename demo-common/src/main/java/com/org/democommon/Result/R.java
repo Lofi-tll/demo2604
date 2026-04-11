@@ -15,19 +15,14 @@ public class R<T> implements Serializable {
     public static <T> R<T> success() {
         R<T> result = new R<T>();
         result.code = 200;
+        result.msg = "success";
         return result;
     }
 
     public static <T> R<T> success(T data) {
         R<T> result = new R<T>();
         result.code = 200;
-        result.data = data;
-        return result;
-    }
-
-    public static <T> R<T> error(T data) {
-        R<T> result = new R<T>();
-        result.code = 500;
+        result.msg = "success";
         result.data = data;
         return result;
     }

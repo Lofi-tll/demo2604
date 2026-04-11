@@ -1,5 +1,6 @@
 package com.org.demoservice.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.org.democommon.enumeration.ErrorCode;
 import com.org.democommon.exception.UsualException;
@@ -37,41 +38,48 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
 
     @Override
     @Transactional(readOnly = true)
-    public List<Book> findByName(String name) {
-        return bookMapper.selectBookWithName(name);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Book findByIsbn(String isbn) {
-        Book book = super.getOne(lambdaQuery().eq(Book::getIsbn, isbn),false);
+        Book book = bookMapper.selectBookWithIsbn(isbn);
         if (book == null) {
             throw new UsualException(ErrorCode.BOOK_NOT_EXIST);
         }
-        return bookMapper.selectBookCategory(book.getId());
+        return book;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Book> findByAuthor(String author) {
-        return bookMapper.selectBookWithAuthor(author);
+    public Page<Book> pageBooks(
+            Integer pageNum,
+            Integer pageSize,
+            String keyword,
+            String category
+    ){
+        Page<Book> page = new Page<>(pageNum, pageSize);
+        return bookMapper.pageBooks(page, keyword, category);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Book> findByCategory(Integer categoryId) {
-        return bookMapper.selectListBookWithCategory(categoryId);
+    public void addBook(Book book) {
+        bookMapper.insert(book);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Book> findByPublisher(String publisher) {
-        return bookMapper.selectBookWithPublisher(publisher);
+    public void addBooks(List<Book> books) {
+        bookMapper.insertBatch(books);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Book> findAllBook(){
-        return bookMapper.selectListBookAll();
+    public void updateBook(Book book) {
+        bookMapper.updateById(book);
+    }
+
+    @Override
+    public void deleteBook(Long id) {
+        bookMapper.deleteById(id);
+    }
+
+    @Override
+    public void deleteBooks(List<Long> ids) {
+        bookMapper.deleteBatchIds(ids);
     }
 }

@@ -2,8 +2,14 @@ package com.org.demoentity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -13,6 +19,14 @@ import lombok.Data;
 @TableName(value ="book")
 @Data
 public class Book implements Serializable {
+
+    /**
+     * 版本号
+     */
+    @TableField(exist = false)
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * 图书表主键
      */
@@ -22,6 +36,7 @@ public class Book implements Serializable {
     /**
      * 书名
      */
+    @NotBlank(message = "书名不能为空")
     private String name;
 
     /**
@@ -32,6 +47,7 @@ public class Book implements Serializable {
     /**
      * 国际标准书号
      */
+    @NotBlank(message = "ISBN不能为空")
     private String isbn;
 
     /**
@@ -42,11 +58,13 @@ public class Book implements Serializable {
     /**
      * 总库存
      */
+    @NotNull(message = "总库存不能为空")
     private Long totalStock;
 
     /**
      * 可借库存
      */
+    @NotNull(message = "可借库存不能为空")
     private Long borrowableStock;
 
     /**
@@ -57,7 +75,7 @@ public class Book implements Serializable {
     /**
      * 出版日期
      */
-    private Date publishDate;
+    private LocalDate publishDate;
 
     /**
      * 图书描述
@@ -67,17 +85,18 @@ public class Book implements Serializable {
     /**
      * 可借出1 不可借出0
      */
+    @NotNull(message = "可借状态不能为空")
     private Integer isBorrowable;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 已删除1 未删除0
@@ -87,9 +106,6 @@ public class Book implements Serializable {
 
     @TableField(exist = false) // 标注：数据库不存在这个字段
     private String categoryName;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean equals(Object that) { //重写equals方法，比较两个对象是否相等

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.org.demomapper.BorrowRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.org.demoentity.BorrowRecord">
+            <id property="id" column="id" />
+            <result property="userId" column="user_id" />
+            <result property="bookId" column="book_id" />
+            <result property="borrowTime" column="borrow_time" />
+            <result property="expectedReturnTime" column="expected_return_time" />
+            <result property="actualReturnTime" column="actual_return_time" />
+            <result property="borrowStatus" column="borrow_status" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+            <result property="isDelete" column="is_delete" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,book_id,borrow_time,expected_return_time,actual_return_time,
+        borrow_status,create_time,update_time,is_delete
+    </sql>
+</mapper>

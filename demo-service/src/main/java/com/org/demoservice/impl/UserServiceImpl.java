@@ -1,18 +1,27 @@
 package com.org.demoservice.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.org.democommon.context.UserContext;
 import com.org.democommon.enumeration.ErrorCode;
 import com.org.democommon.exception.UsualException;
+import com.org.democommon.security.LoginUser;
 import com.org.democommon.util.HashUtil;
 import com.org.democommon.util.JwtUtil;
 import com.org.demoentity.DTO.LoginDTO;
+import com.org.demoentity.DTO.UserPasswordDTO;
 import com.org.demoentity.DTO.UserUpdateDTO;
 import com.org.demoentity.User;
 import com.org.demoentity.VO.LoginVO;
 import com.org.demoentity.VO.UserVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import com.org.demomapper.UserMapper;
 import com.org.demoservice.UserService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+
 
 /**
 * @author Lofi
@@ -27,16 +36,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserServiceImpl(UserMapper userMapper) { this.userMapper = userMapper; }
 
     @Override
+    @Transactional
     public void registerUser(User user) {
-        if(userMapper.selectUserInfo(user.getAccountNum(), user.getTel(), user.getUserName()) != null){
+        if (user == null) {
+            throw new UsualException(ErrorCode.PARAM_ERROR);
+        }
+
+        List<User> Exist = userMapper.selectUserList(user.getAccountNum(), user.getTel(), user.getUserName());
+
+        if(!Exist.isEmpty()){
             throw new UsualException(ErrorCode.USER_EXIST);
         }
         user.setPassword(HashUtil.encode(user.getPassword()));
+        user.setRole(0);
         userMapper.insert(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public LoginVO loginUser(LoginDTO loginDTO) {
+
+        if(loginDTO == null){
+            throw new UsualException(ErrorCode.PARAM_ERROR);
+        }
+
+        if(loginDTO.getAccountNum().isEmpty() && loginDTO.getTel().isEmpty() && loginDTO.getUserName().isEmpty()){
+            throw new UsualException(ErrorCode.PARAM_ERROR);
+        }
 
         User userInDB = userMapper.selectUserInfo(loginDTO.getAccountNum(),loginDTO.getTel(),loginDTO.getUserName());
 
@@ -67,50 +93,71 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     //=============================================================================
 
     @Override
-    public void deleteCurrentUser(String password) {
-
+    @Transactional
+    public void deleteCurrentUser(UserPasswordDTO userPasswordDTO) {
+        LoginUser user = UserContext.getUser();
+        User userInDB = userMapper.selectById(user.getId());
+        if(userInDB == null){
+            throw new UsualException(ErrorCode.USER_NOT_EXIST);
+        }
+        if(!HashUtil.matches(userPasswordDTO.getPassword(), userInDB.getPassword())){
+            throw new UsualException(ErrorCode.PASSWORD_ERROR);
+        }
+        userMapper.deleteById(user.getId());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserVO getCurrentUser() {
-        return null;
+        LoginUser user = UserContext.getUser();
+        User userInDB = userMapper.selectById(user.getId());
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userInDB,userVO);
+
+        return userVO;
     }
 
     @Override
-    public void updateCurrentUserInfo(LoginDTO loginDTO) {
-
+    @Transactional
+    public void updateCurrentUserInfo(UserUpdateDTO userUpdateDTO) {
+        User user = new User();
+        user.setId(UserContext.getUser().getId());
+        BeanUtils.copyProperties(userUpdateDTO,user);
+        userMapper.updateById(user);
     }
 
     //=============================================================================
 
     @Override
+    @Transactional(readOnly = true)
     public UserVO getUserInfo(String accountNum, String tel, String userName) {
+        if (accountNum == null && tel == null && userName == null) {
+            throw new UsualException(ErrorCode.PARAM_ERROR.getCode(), ErrorCode.PARAM_ERROR.getMessage());
+        }
+
         User user = userMapper.selectUserInfo(accountNum, tel, userName);
 
         if(user == null){
             throw new UsualException(ErrorCode.USER_NOT_EXIST);
         }
-
-        return new UserVO(
-                user.getId(),
-                user.getAccountNum(),
-                user.getUserName(),
-                user.getStatus()
-        );
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user,userVO);
+        return userVO;
     }
 
     @Override
+    @Transactional
     public void updateUserByAdmin(Long id, UserUpdateDTO userUpdateDTO) {
-
+        User user = new User();
+        user.setId(id);
+        BeanUtils.copyProperties(userUpdateDTO,user);
+        userMapper.updateById(user);
     }
 
     @Override
+    @Transactional
     public void deleteUserByAdmin(Long id) {
-
+        userMapper.deleteById(id);
     }
 
 }
-
-
-
-

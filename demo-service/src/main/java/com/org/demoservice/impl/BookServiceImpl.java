@@ -7,8 +7,10 @@ import com.org.democommon.exception.UsualException;
 import com.org.demoentity.Book;
 import com.org.demoentity.DTO.BookAddDTO;
 import com.org.demoentity.DTO.BookUpdateDTO;
+import com.org.demoentity.DTO.UserUpdateDTO;
 import com.org.demomapper.BookMapper;
 import com.org.demoservice.BookService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,18 +63,10 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
     }
 
     @Override
+    @Transactional
     public void addBook(BookAddDTO bookAddDTO) {
         Book book = new Book();
-        book.setName(bookAddDTO.getName());
-        book.setAuthor(bookAddDTO.getAuthor());
-        book.setIsbn(bookAddDTO.getIsbn());
-        book.setCategoryId(bookAddDTO.getCategoryId());
-        book.setTotalStock(bookAddDTO.getTotalStock());
-        book.setBorrowableStock(bookAddDTO.getBorrowableStock());
-        book.setPublisher(bookAddDTO.getPublisher());
-        book.setPublishDate(bookAddDTO.getPublishDate());
-        book.setDescription(bookAddDTO.getDescription());
-        book.setIsBorrowable(bookAddDTO.getIsBorrowable());
+        BeanUtils.copyProperties(bookAddDTO, book);
         bookMapper.insert(book);
     }
 
@@ -81,16 +75,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
     public void addBooks(List<BookAddDTO> bookAddDTOS) {
         List<Book> books = bookAddDTOS.stream().map(bookAddDTO -> {
             Book book = new Book();
-            book.setName(bookAddDTO.getName());
-            book.setAuthor(bookAddDTO.getAuthor());
-            book.setIsbn(bookAddDTO.getIsbn());
-            book.setCategoryId(bookAddDTO.getCategoryId());
-            book.setTotalStock(bookAddDTO.getTotalStock());
-            book.setBorrowableStock(bookAddDTO.getBorrowableStock());
-            book.setPublisher(bookAddDTO.getPublisher());
-            book.setPublishDate(bookAddDTO.getPublishDate());
-            book.setDescription(bookAddDTO.getDescription());
-            book.setIsBorrowable(bookAddDTO.getIsBorrowable());
+            BeanUtils.copyProperties(bookAddDTO, book);
             return book;
         }).toList();
 
@@ -98,24 +83,24 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
     }
 
     @Override
+    @Transactional
     public void updateBook(BookUpdateDTO bookUpdateDTO) {
+        Book exist = bookMapper.selectById(bookUpdateDTO.getId());
+        if (exist == null) {
+            throw new UsualException(ErrorCode.BOOK_NOT_EXIST);
+        }
         Book book = new Book();
-        book.setId(bookUpdateDTO.getId());
-        book.setName(bookUpdateDTO.getName());
-        book.setAuthor(bookUpdateDTO.getAuthor());
-        book.setIsbn(bookUpdateDTO.getIsbn());
-        book.setCategoryId(bookUpdateDTO.getCategoryId());
-        book.setTotalStock(bookUpdateDTO.getTotalStock());
-        book.setBorrowableStock(bookUpdateDTO.getBorrowableStock());
-        book.setPublisher(bookUpdateDTO.getPublisher());
-        book.setPublishDate(bookUpdateDTO.getPublishDate());
-        book.setDescription(bookUpdateDTO.getDescription());
-        book.setIsBorrowable(bookUpdateDTO.getIsBorrowable());
+        BeanUtils.copyProperties(bookUpdateDTO, book);
         bookMapper.updateById(book);
     }
 
     @Override
+    @Transactional
     public void deleteBook(Long id) {
+        Book exist = bookMapper.selectById(id);
+        if (exist == null) {
+            throw new UsualException(ErrorCode.BOOK_NOT_EXIST);
+        }
         bookMapper.deleteById(id);
     }
 

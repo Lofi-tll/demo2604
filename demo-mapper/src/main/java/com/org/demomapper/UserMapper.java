@@ -2,12 +2,10 @@ package com.org.demomapper;
 
 import com.org.demoentity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.awt.font.TextLayout;
+import java.util.List;
 
 /**
 * @author MR
@@ -32,6 +30,7 @@ public interface UserMapper extends BaseMapper<User> {
             <if test="userName != null">
                 AND user_name = #{userName}
             </if>
+            LIMIT 1
         </script>
             """)
     public User selectUserInfo(
@@ -40,4 +39,18 @@ public interface UserMapper extends BaseMapper<User> {
             @Param("userName") String userName
     );
 
+    @Select("""
+        <script>
+            select id, account_num, user_name, password, status, role, tel from user
+                    where 1=1
+                      <if test="accountNum != null">and account_num = #{accountNum}</if>
+                      <if test="tel != null">and tel = #{tel}</if>
+                      <if test="userName != null">and user_name = #{userName}</if>
+        </script>
+            """)
+    public List<User> selectUserList(
+            @Param("accountNum") String accountNum,
+            @Param("tel") String tel,
+            @Param("userName") String userName
+    );
 }

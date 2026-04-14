@@ -1,5 +1,6 @@
 package com.org.demoentity.DTO;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.io.Serial;
@@ -16,6 +17,7 @@ public class LoginDTO implements Serializable {
 
     private String userName;
 
+    @NotBlank(message = "密码不能为空")
     private String password;
 
 }

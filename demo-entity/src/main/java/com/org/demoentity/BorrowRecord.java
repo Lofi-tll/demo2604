@@ -6,59 +6,61 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
-
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * 用户表
- * @TableName user
+ * 借阅记录表
+ * @TableName borrow_record
  */
-@TableName(value ="user")
+@TableName(value ="borrow_record")
 @Data
-public class User implements Serializable {
+public class BorrowRecord implements Serializable {
 
-    /**
-     * 固定版本号
-     */
     @TableField(exist = false)
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户表主键
+     * 借阅记录表主键
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 账号id
+     * 借阅人id
      */
-    @NotBlank(message = "账号不能为空")
-    private String accountNum;
+    private Long userId;
 
     /**
-     * 用户名
+     * 借出书籍id
      */
-    @NotBlank(message = "用户名不能为空")
-    private String userName;
+    private Long bookId;
 
     /**
-     * 账号密码
+     * 借出时间
      */
-    @NotBlank(message = "密码不能为空")
-    private String password;
+    private LocalDateTime borrowTime;
 
     /**
-     * 角色权限 用户0 管理员1
+     * 预期归还时间
      */
-    private Integer role;
+    private LocalDateTime expectedReturnTime;
 
     /**
-     * 手机号
+     * 实际归还时间
      */
-    @NotBlank(message = "手机号不能为空")
-    private String tel;
+    private LocalDateTime actualReturnTime;
+
+    /**
+     * 借阅状态 借阅中0 已归还1
+     */
+    private Integer borrowStatus;
+
+    /**
+     * 归还状态 未逾期0 已逾期1
+     */
+    @TableField(exist = false)
+    private Integer isOverdue;
 
     /**
      * 创建时间
@@ -69,11 +71,6 @@ public class User implements Serializable {
      * 更新时间
      */
     private LocalDateTime updateTime;
-
-    /**
-     * 启用1 停用0
-     */
-    private Integer status;
 
     /**
      * 已删除1 未删除0
@@ -92,16 +89,16 @@ public class User implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        User other = (User) that;
+        BorrowRecord other = (BorrowRecord) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getAccountNum() == null ? other.getAccountNum() == null : this.getAccountNum().equals(other.getAccountNum()))
-            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getRole() == null ? other.getRole() == null : this.getRole().equals(other.getRole()))
-            && (this.getTel() == null ? other.getTel() == null : this.getTel().equals(other.getTel()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.getBookId() == null ? other.getBookId() == null : this.getBookId().equals(other.getBookId()))
+            && (this.getBorrowTime() == null ? other.getBorrowTime() == null : this.getBorrowTime().equals(other.getBorrowTime()))
+            && (this.getExpectedReturnTime() == null ? other.getExpectedReturnTime() == null : this.getExpectedReturnTime().equals(other.getExpectedReturnTime()))
+            && (this.getActualReturnTime() == null ? other.getActualReturnTime() == null : this.getActualReturnTime().equals(other.getActualReturnTime()))
+            && (this.getBorrowStatus() == null ? other.getBorrowStatus() == null : this.getBorrowStatus().equals(other.getBorrowStatus()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getIsDelete() == null ? other.getIsDelete() == null : this.getIsDelete().equals(other.getIsDelete()));
     }
 
@@ -110,14 +107,14 @@ public class User implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getAccountNum() == null) ? 0 : getAccountNum().hashCode());
-        result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
-        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
-        result = prime * result + ((getRole() == null) ? 0 : getRole().hashCode());
-        result = prime * result + ((getTel() == null) ? 0 : getTel().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getBookId() == null) ? 0 : getBookId().hashCode());
+        result = prime * result + ((getBorrowTime() == null) ? 0 : getBorrowTime().hashCode());
+        result = prime * result + ((getExpectedReturnTime() == null) ? 0 : getExpectedReturnTime().hashCode());
+        result = prime * result + ((getActualReturnTime() == null) ? 0 : getActualReturnTime().hashCode());
+        result = prime * result + ((getBorrowStatus() == null) ? 0 : getBorrowStatus().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
-        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getIsDelete() == null) ? 0 : getIsDelete().hashCode());
         return result;
     }
@@ -129,14 +126,14 @@ public class User implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", accountNum=").append(accountNum);
-        sb.append(", userName=").append(userName);
-        sb.append(", password=").append(password);
-        sb.append(", role=").append(role);
-        sb.append(", tel=").append(tel);
+        sb.append(", userId=").append(userId);
+        sb.append(", bookId=").append(bookId);
+        sb.append(", borrowTime=").append(borrowTime);
+        sb.append(", expectedReturnTime=").append(expectedReturnTime);
+        sb.append(", actualReturnTime=").append(actualReturnTime);
+        sb.append(", borrowStatus=").append(borrowStatus);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
-        sb.append(", status=").append(status);
         sb.append(", isDelete=").append(isDelete);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

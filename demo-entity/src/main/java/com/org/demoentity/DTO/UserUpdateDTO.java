@@ -1,8 +1,12 @@
 package com.org.demoentity.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
 import java.io.Serial;
 import java.io.Serializable;
 
+@Data
 public class UserUpdateDTO implements Serializable {
 
     @Serial
@@ -14,6 +18,7 @@ public class UserUpdateDTO implements Serializable {
 
     private String userName;
 
+    @NotBlank(message = "密码不能为空")
     private String password;
 
 }

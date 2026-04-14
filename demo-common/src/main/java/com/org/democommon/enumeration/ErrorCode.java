@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     // ==================== 通用 ====================
+    PARAM_ERROR(400, "参数错误"),
     UNAUTHORIZED(401, "未登录，请先登录"),
     FORBIDDEN(403, "无权限访问"),
     SYSTEM_ERROR(500, "系统异常，请稍后重试"),
@@ -21,6 +22,7 @@ public enum ErrorCode {
     ALREADY_RETURNED(2002, "图书已归还，无需重复操作"),
     BORROW_OVERDUE(2003, "图书已逾期，请先处理逾期"),
     MAX_BORROW_LIMIT(2004, "已达到最大可借阅数量"),
+    ALREADY_BORROW(2005, "图书已借阅成功，无需重复操作"),
 
     // ==================== 用户相关 ====================
     USER_NOT_EXIST(3001, "用户不存在"),

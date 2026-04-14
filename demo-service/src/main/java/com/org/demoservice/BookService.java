@@ -3,6 +3,8 @@ package com.org.demoservice;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.org.demoentity.Book;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.org.demoentity.DTO.BookAddDTO;
+import com.org.demoentity.DTO.BookUpdateDTO;
 
 import java.util.List;
 
@@ -29,11 +31,11 @@ public interface BookService extends IService<Book> {
 
     //增删改类接口
 
-    void addBook(Book book);
+    void addBook(BookAddDTO bookAddDTO);
 
-    void addBooks(List<Book> books);
+    void addBooks(List<BookAddDTO> bookAddDTOList);
 
-    void updateBook(Book book);
+    void updateBook(BookUpdateDTO bookUpdateDTO);
 
     void deleteBook(Long id);
 

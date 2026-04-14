@@ -46,9 +46,11 @@ public interface BookMapper extends BaseMapper<Book> {
             WHERE b.is_delete = 0
 
             <if test="keyword != null">
+            (
                 AND (b.name LIKE CONCAT('%', #{keyword}, '%')
                      OR b.author LIKE CONCAT('%', #{keyword}, '%')
                      OR b.publisher LIKE CONCAT('%', #{keyword}, '%'))
+            )
             </if>
 
             <if test="category != null">

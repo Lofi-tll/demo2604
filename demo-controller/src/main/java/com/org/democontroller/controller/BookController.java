@@ -3,8 +3,11 @@ package com.org.democontroller.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.org.democommon.Result.R;
 import com.org.demoentity.Book;
+import com.org.demoentity.DTO.BookAddDTO;
+import com.org.demoentity.DTO.BookUpdateDTO;
 import com.org.demoservice.BookService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,9 +17,7 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
+    public BookController(BookService bookService) { this.bookService = bookService; }
 
     //Get接口
 
@@ -38,7 +39,7 @@ public class BookController {
     }
 
     @GetMapping("/ISBN/{isbn}")
-    public R<Book> getByISBN(@PathVariable String isbn){
+    public R<Book> getByISBN(@PathVariable String isbn) {
         Book book = bookService.findByIsbn(isbn);
         return R.success(book);
     }
@@ -46,36 +47,40 @@ public class BookController {
     //Post接口
 
     @PostMapping("")
-    public R<Void> addBook(@Valid @RequestBody Book book){
-        bookService.addBook(book);
+    @PreAuthorize("hasRole('admin')")
+    public R<Void> addBook(@Valid @RequestBody BookAddDTO bookAddDTO){
+        bookService.addBook(bookAddDTO);
         return R.success();
     }
 
     @PostMapping("/batch")
-    public R<Void> addBooks(@Valid @RequestBody List<Book> books){
-        bookService.addBooks(books);
+    @PreAuthorize("hasRole('admin')")
+    public R<Void> addBooks(@Valid @RequestBody List<BookAddDTO> bookAddDTOs){
+        bookService.addBooks(bookAddDTOs);
         return R.success();
     }
 
     //Update接口
 
     @PutMapping("")
-    public R<Void> updateBook(@Valid @RequestBody Book book){
-        bookService.updateBook(book);
+    @PreAuthorize("hasRole('admin')")
+    public R<Void> updateBook(@Valid @RequestBody BookUpdateDTO bookUpdateDTO){
+        bookService.updateBook(bookUpdateDTO);
         return R.success();
     }
 
     //Delete接口
 
-    @DeleteMapping("")
-    public R<Void> deleteBook(@RequestBody Book book){
-        bookService.deleteBook(book.getId());
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
+    public R<Void> deleteBook(@PathVariable Long id){
+        bookService.deleteBook(id);
         return R.success();
     }
 
     @DeleteMapping("/batch")
-    public R<Void> deleteBooks(@RequestBody List<Book> books){
-        List<Long> ids = books.stream().map(Book::getId).toList();
+    @PreAuthorize("hasRole('admin')")
+    public R<Void> deleteBooks(@RequestParam List<Long> ids){
         bookService.deleteBooks(ids);
         return R.success();
     }

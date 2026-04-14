@@ -1,7 +1,11 @@
 package com.org.demoservice;
 
+import com.org.demoentity.DTO.LoginDTO;
+import com.org.demoentity.DTO.UserUpdateDTO;
 import com.org.demoentity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.org.demoentity.VO.LoginVO;
+import com.org.demoentity.VO.UserVO;
 
 /**
 * @author Lofi
@@ -9,5 +13,28 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2026-04-11 15:18:19
 */
 public interface UserService extends IService<User> {
+
+    //注册登录接口
+
+    public void registerUser(User user);
+
+    public LoginVO loginUser(LoginDTO loginDTO);
+
+    //用户权限接口
+
+    public void deleteCurrentUser(String password);
+
+    public UserVO getCurrentUser();
+
+    public void updateCurrentUserInfo(LoginDTO loginDTO);
+
+    //管理员权限接口
+
+    public UserVO getUserInfo(String accountNum, String tel, String userName);
+
+    public void updateUserByAdmin(Long id, UserUpdateDTO userUpdateDTO);
+
+    void deleteUserByAdmin(Long id);
+
 
 }

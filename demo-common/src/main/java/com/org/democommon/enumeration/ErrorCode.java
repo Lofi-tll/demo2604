@@ -6,10 +6,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     // ==================== 通用 ====================
-    PARAM_ERROR(400, "参数不正确"),
     UNAUTHORIZED(401, "未登录，请先登录"),
     FORBIDDEN(403, "无权限访问"),
-    NOT_FOUND(404, "资源不存在"),
     SYSTEM_ERROR(500, "系统异常，请稍后重试"),
 
     // ==================== 图书相关 ====================

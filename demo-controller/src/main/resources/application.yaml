@@ -1,15 +1,21 @@
 server:
-  port: 8081  # 你要的端口
+  port: 8081  # 端口号
 
 
 logging:
   level:
-    root: INFO
-    org.springframework: INFO
-    org.apache.ibatis: INFO  # 关键：关闭数据打印
+    root: info
+    org.springframework: info
+    org.apache.ibatis: info  # 关键：关闭数据打印
+    com.org.democommon: debug  #security配置log记录对token匹配的信息
 
 
 spring:
+  # Spring Security 配置
+  security:
+    user:
+      name: lofi
+      password: 123456
   # MySQL 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

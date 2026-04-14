@@ -1,11 +1,11 @@
 package com.org.demoentity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
@@ -15,6 +15,14 @@ import lombok.Data;
 @TableName(value ="user")
 @Data
 public class User implements Serializable {
+
+    /**
+     * 固定版本号
+     */
+    @TableField(exist = false)
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * 用户表主键
      */
@@ -64,10 +72,8 @@ public class User implements Serializable {
     /**
      * 已删除1 未删除0
      */
+    @TableLogic
     private Integer isDelete;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean equals(Object that) {

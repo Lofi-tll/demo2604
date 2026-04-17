@@ -2,6 +2,8 @@ package com.org.democontroller.controller;
 
 
 import com.org.democommon.Result.R;
+import com.org.democommon.enumeration.ErrorCode;
+import com.org.democommon.exception.UsualException;
 import com.org.demoentity.DTO.LoginDTO;
 import com.org.demoentity.DTO.UserPasswordDTO;
 import com.org.demoentity.DTO.UserUpdateDTO;
@@ -59,14 +61,17 @@ public class UserController {
     @PutMapping("/user")
     @PreAuthorize("hasRole('user')")
     public R<Void> updateCurrentUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        if(userUpdateDTO.getPassword().isEmpty()) {
+            throw new UsualException(ErrorCode.PARAM_ERROR);
+        }
         userService.updateCurrentUserInfo(userUpdateDTO);
         return R.success();
     }
 
     @PutMapping("/admin")
     @PreAuthorize("hasRole('admin')")
-    public R<Void> updateUser(@NotNull(message = "id不能为空") @RequestParam Long id, @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
-        userService.updateUserByAdmin(id, userUpdateDTO);
+    public R<Void> updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        userService.updateUserByAdmin(userUpdateDTO);
         return R.success();
     }
 

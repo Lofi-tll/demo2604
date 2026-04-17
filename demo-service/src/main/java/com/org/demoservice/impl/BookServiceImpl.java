@@ -67,7 +67,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
     public void addBook(BookAddDTO bookAddDTO) {
         Book book = new Book();
         BeanUtils.copyProperties(bookAddDTO, book);
-        bookMapper.insert(book);
+        bookMapper.addBook(book);
     }
 
     @Override

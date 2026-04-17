@@ -33,7 +33,7 @@ public interface UserService extends IService<User> {
 
     public UserVO getUserInfo(String accountNum, String tel, String userName);
 
-    public void updateUserByAdmin(Long id, UserUpdateDTO userUpdateDTO);
+    public void updateUserByAdmin(UserUpdateDTO userUpdateDTO);
 
     public void deleteUserByAdmin(Long id);
 

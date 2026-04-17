@@ -60,7 +60,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new UsualException(ErrorCode.PARAM_ERROR);
         }
 
-        if(loginDTO.getAccountNum().isEmpty() && loginDTO.getTel().isEmpty() && loginDTO.getUserName().isEmpty()){
+        // 判空必须先判断是否为null，再判断是否为空字符串
+        if (StringUtils.isEmpty(loginDTO.getAccountNum())
+                && StringUtils.isEmpty(loginDTO.getTel())
+                && StringUtils.isEmpty(loginDTO.getUserName())) {
             throw new UsualException(ErrorCode.PARAM_ERROR);
         }
 
@@ -147,9 +150,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     @Transactional
-    public void updateUserByAdmin(Long id, UserUpdateDTO userUpdateDTO) {
+    public void updateUserByAdmin(UserUpdateDTO userUpdateDTO) {
         User user = new User();
-        user.setId(id);
         BeanUtils.copyProperties(userUpdateDTO,user);
         userMapper.updateById(user);
     }

@@ -68,18 +68,32 @@ public interface BookMapper extends BaseMapper<Book> {
     //批量添加操作
 
     @Insert("""
-        <script>
             INSERT INTO book (
-                name, author, isbn, categoryId, totalStock, 
-                borrowableStock, publisher, publishDate, 
-                description, isBorrowable, createTime, updateTime, isDelete
+                name, author, isbn, category_id, total_stock,
+                borrowable_stock, publisher, publish_date,
+                description, is_borrowable
             )
             VALUES
-            <foreach collection="bookList" item="book" separator=",">
+            (#{book.name}, #{book.author}, #{book.isbn}, #{book.categoryId},
+             #{book.totalStock}, #{book.borrowableStock}, #{book.publisher},
+             #{book.publishDate}, #{book.description}, #{book.isBorrowable}
+            )
+            """)
+    void addBook(@Param("book") Book book);
+
+    @Insert("""
+        <script>
+            INSERT INTO book (
+                name, author, isbn, category_id, total_stock,
+                borrowable_stock, publisher, publish_date,
+                description, is_borrowable
+            )
+            VALUES
+            <foreach collection="bookList" item= "book" separator=",">
                 (#{book.name}, #{book.author}, #{book.isbn}, #{book.categoryId},
                  #{book.totalStock}, #{book.borrowableStock}, #{book.publisher},
-                 #{book.publishDate}, #{book.description}, #{book.isBorrowable},
-                 #{book.createTime}, #{book.updateTime}, #{book.isDelete})
+                 #{book.publishDate}, #{book.description}, #{book.isBorrowable}
+                )
             </foreach>
         </script>
         """)

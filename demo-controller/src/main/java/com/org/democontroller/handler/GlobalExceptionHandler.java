@@ -2,6 +2,7 @@ package com.org.democontroller.handler;
 
 import com.org.democommon.Result.R;
 import com.org.democommon.exception.UsualException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 时间戳)    未做处理，实际项目中可以根据需要进行增添
  */
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -41,6 +43,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsualException.class)
     public R<Void> handleException(UsualException e) {
         return R.error(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public R<Void> handleException(RuntimeException e) {
+        log.error(e.getMessage(), e);
+        return R.error(500,e.getMessage());
     }
 
     /**

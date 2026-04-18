@@ -45,6 +45,9 @@ public class SecurityConfig {
                     // 放行：登录、注册 → 不用登录就能访问
                     .requestMatchers("/users/login", "/users/register").permitAll()
 
+                    // 放行：接口文档页面
+                    .requestMatchers("/doc.html","/webjars/**","/swagger-resources/**","/v3/api-docs/**").permitAll()
+
                     // 放行：异常界面
                     .requestMatchers("/error").permitAll()
 

@@ -26,6 +26,7 @@ public interface BorrowRecordMapper extends BaseMapper<BorrowRecord> {
             IF(expected_return_time < NOW(), 1, 0) AS is_overdue
             FROM borrow_record
             WHERE user_id = #{userId}
+            ORDER BY create_time DESC
             """)
     public List<BorrowRecord> selectByUserId(@Param("userId") Long userId);
 

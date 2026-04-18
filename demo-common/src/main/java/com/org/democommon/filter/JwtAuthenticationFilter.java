@@ -23,6 +23,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+//==============================================================================
+
+        String uri = request.getRequestURI();
+
+        // 放行 Knife4j 接口文档
+        if (uri.contains("doc.html") || uri.contains("webjars") ||
+                uri.contains("v3/api-docs") || uri.contains("swagger-resources")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+//==============================================================================
         String header = request.getHeader("Authorization");
 
         log.debug("收到请求头Authorization: {}", header);

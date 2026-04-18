@@ -2,6 +2,9 @@ package com.org.demomapper;
 
 import com.org.demoentity.BookCategory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
 * @author MR

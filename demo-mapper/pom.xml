@@ -13,6 +13,8 @@
     <artifactId>demo-mapper</artifactId>
 
     <dependencies>
+
+
         <dependency>
             <groupId>com.org</groupId>
             <artifactId>demo-entity</artifactId>

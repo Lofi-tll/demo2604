@@ -6,6 +6,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -14,6 +16,7 @@ import lombok.Data;
  */
 @TableName(value ="borrow_record")
 @Data
+@Schema(description = "借阅记录")
 public class BorrowRecord implements Serializable {
 
     @TableField(exist = false)
@@ -24,58 +27,71 @@ public class BorrowRecord implements Serializable {
      * 借阅记录表主键
      */
     @TableId(type = IdType.AUTO)
+    @Schema(description = "记录ID", example = "1")
     private Long id;
 
     /**
      * 借阅人id
      */
+    @Schema(description = "用户ID", example = "1")
     private Long userId;
 
     /**
      * 借出书籍id
      */
+    @Schema(description = "书籍ID", example = "1")
     private Long bookId;
 
     /**
      * 借出时间
      */
+    @Schema(description = "借出时间", example = "2024-01-01T10:00:00")
     private LocalDateTime borrowTime;
 
     /**
-     * 预期归还时间
+     * 预期归还时间 （计算得出，非数据库字段）
      */
+    @Schema(description = "预计归还时间", example = "2024-03-01T10:00:00")
     private LocalDateTime expectedReturnTime;
 
     /**
      * 实际归还时间
      */
+    @Schema(description = "实际归还时间", example = "2024-02-11T10:00:00")
     private LocalDateTime actualReturnTime;
 
     /**
      * 借阅状态 借阅中0 已归还1
      */
+    @Schema(description = "借阅状态 借阅中0 已归还1", example = "0")
     private Integer borrowStatus;
 
     /**
      * 归还状态 未逾期0 已逾期1
      */
     @TableField(exist = false)
+    @Schema(description = "归还状态 未逾期0 已逾期1", example = "0")
     private Integer isOverdue;
 
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
+    @Schema(description = "创建时间", hidden = true)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @Schema(description = "更新时间", hidden = true)
     private LocalDateTime updateTime;
 
     /**
      * 已删除1 未删除0
      */
     @TableLogic
+    @Schema(description = "已删除1 未删除0", hidden = true)
     private Integer isDelete;
 
     @Override

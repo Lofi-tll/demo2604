@@ -6,6 +6,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -14,6 +16,7 @@ import lombok.Data;
  */
 @TableName(value ="book")
 @Data
+@Schema(description = "图书信息")
 public class Book implements Serializable {
 
     /**
@@ -27,77 +30,92 @@ public class Book implements Serializable {
      * 图书表主键
      */
     @TableId(type = IdType.AUTO)
+    @Schema(description = "图书ID", example = "1")
     private Long id;
 
     /**
      * 书名
      */
+    @Schema(description = "书籍名称", example = "女儿红")
     private String name;
 
     /**
      * 作者
      */
+    @Schema(description = "作者", example = "简媜")
     private String author;
 
     /**
      * 国际标准书号
      */
+    @Schema(description = "国际标准书号", example = "9575221478")
     private String isbn;
 
     /**
      * 分类id
      */
+    @Schema(description = "分类ID", example = "15")
     private Long categoryId;
 
     /**
      * 总库存
      */
+    @Schema(description = "总库存", example = "20")
     private Long totalStock;
 
     /**
      * 可借库存
      */
+    @Schema(description = "总库存", example = "15")
     private Long borrowableStock;
 
     /**
      * 出版社
      */
+    @Schema(description = "出版社", example = "联合文学出版社")
     private String publisher;
 
     /**
      * 出版日期
      */
+    @Schema(description = "出版日期", example = "2009-11-01")
     private LocalDate publishDate;
 
     /**
      * 图书描述
      */
+    @Schema(description = "图书描述", example = "《女儿红》是台湾作家简媜的小说，讲述了一个关于家庭、爱情和成长的故事。")
     private String description;
 
     /**
      * 可借出1 不可借出0
      */
+    @Schema(description = "可借出1 不可借出0", example = "1")
     private Integer isBorrowable;
 
     /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
+    @Schema(description = "创建时间", hidden = true)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @Schema(description = "更新时间", hidden = true)
     private LocalDateTime updateTime;
 
     /**
      * 已删除1 未删除0
      */
     @TableLogic                //表明软删除字段对应的属性
+    @Schema(description = "已删除1 未删除0", hidden = true)
     private Integer isDelete;
 
     @TableField(exist = false) // 标注：数据库不存在这个字段
+    @Schema(description = "分类名称，数据库无此字段，仅用于展示", example = "文学")
     private String categoryName;
 
     @Override

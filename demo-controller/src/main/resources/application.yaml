@@ -10,6 +10,13 @@ logging:
     com.org.democommon: debug  #security配置log记录对token匹配的信息
 
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+
 spring:
   # Spring Security 配置
   security:
@@ -56,6 +63,7 @@ knife4j:
   enable: true
   setting:
     language: ZH_CN
+    enable-open-api: true
 # 监控 Actuator
 management:
   endpoints:

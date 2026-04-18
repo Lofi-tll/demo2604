@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ import lombok.Data;
  */
 @TableName(value ="user")
 @Data
+@Schema(description = "用户信息")
 public class User implements Serializable {
 
     /**
@@ -29,56 +31,68 @@ public class User implements Serializable {
      * 用户表主键
      */
     @TableId(type = IdType.AUTO)
+    @Schema(description = "用户主键", example = "1")
     private Long id;
 
     /**
      * 账号id
      */
     @NotBlank(message = "账号不能为空")
+    @Schema(description = "用户账号", example = "10000001")
     private String accountNum;
 
     /**
      * 用户名
      */
     @NotBlank(message = "用户名不能为空")
+    @Schema(description = "用户名", example = "Lofi")
     private String userName;
 
     /**
      * 账号密码
      */
     @NotBlank(message = "密码不能为空")
+    @Schema(description = "账号密码", example = "password123")
     private String password;
 
     /**
      * 角色权限 用户0 管理员1
      */
+    @Schema(description = "角色权限 用户0 管理员1", example = "1")
     private Integer role;
 
     /**
      * 手机号
      */
     @NotBlank(message = "手机号不能为空")
+    @Schema(description = "手机号", example = "12345678910")
     private String tel;
 
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
+    @Schema(description = "创建时间", hidden = true)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @Schema(description = "更新时间", hidden = true)
     private LocalDateTime updateTime;
 
     /**
      * 启用1 停用0
      */
+    @Schema(description = "启用1 停用0", hidden = true)
     private Integer status;
 
     /**
      * 已删除1 未删除0
      */
     @TableLogic
+    @Schema(description = "已删除1 未删除0", hidden = true)
     private Integer isDelete;
 
     @Override

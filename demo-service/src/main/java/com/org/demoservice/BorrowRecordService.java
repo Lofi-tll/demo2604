@@ -3,6 +3,7 @@ package com.org.demoservice;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.org.demoentity.BorrowRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.org.demoentity.DTO.BorrowReturnDTO;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface BorrowRecordService extends IService<BorrowRecord> {
 
     public void borrowBook(Long bookId);
 
-    public void returnBook(BorrowRecord borrowRecord);
+    public void returnBook(BorrowReturnDTO borrowReturnDTO);
 
     //==================admin相关业务====================
     public List<BorrowRecord> getBorrowRecordsByUserId(Long userId);

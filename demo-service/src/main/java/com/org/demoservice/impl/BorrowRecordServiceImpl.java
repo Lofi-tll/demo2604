@@ -7,6 +7,7 @@ import com.org.democommon.enumeration.ErrorCode;
 import com.org.democommon.exception.UsualException;
 import com.org.demoentity.Book;
 import com.org.demoentity.BorrowRecord;
+import com.org.demoentity.DTO.BorrowReturnDTO;
 import com.org.demomapper.BookMapper;
 import com.org.demomapper.BorrowRecordMapper;
 import com.org.demoservice.BorrowRecordService;
@@ -117,12 +118,12 @@ public class BorrowRecordServiceImpl extends ServiceImpl<BorrowRecordMapper, Bor
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void returnBook(BorrowRecord borrowRecord) {
-        if(borrowRecord == null){
+    public void returnBook(BorrowReturnDTO borrowReturnDTO) {
+        if(borrowReturnDTO == null){
             throw new UsualException(ErrorCode.BORROW_RECORD_NOT_EXIST);
         }
 
-        BorrowRecord recordInDB = borrowRecordMapper.selectById(borrowRecord.getId());
+        BorrowRecord recordInDB = borrowRecordMapper.selectById(borrowReturnDTO.getId());
 
         if (recordInDB == null) {
             throw new UsualException(ErrorCode.BORROW_RECORD_NOT_EXIST);
@@ -132,7 +133,7 @@ public class BorrowRecordServiceImpl extends ServiceImpl<BorrowRecordMapper, Bor
             throw new UsualException(ErrorCode.ALREADY_RETURNED);
         }
 
-        Book book = bookMapper.selectById(borrowRecord.getBookId());
+        Book book = bookMapper.selectById(recordInDB.getBookId());
         if (book == null) {
             throw new UsualException(ErrorCode.BOOK_NOT_EXIST);
         }

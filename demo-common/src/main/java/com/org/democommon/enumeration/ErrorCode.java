@@ -16,6 +16,8 @@ public enum ErrorCode {
     BOOK_STOCK_NOT_ENOUGH(1002, "图书库存不足"),
     BOOK_ALREADY_BORROWED(1003, "图书已被借出，无法重复借阅"),
     BOOK_STATUS_ERROR(1004, "图书状态异常，无法操作"),
+    BOOK_CATEGORY_NOT_EXIST(1005, "图书分类不存在"),
+    BOOK_CATEGORY_ERROR(1005, "图书分类错误"),
 
     // ==================== 借阅相关 ====================
     BORROW_RECORD_NOT_EXIST(2001, "借阅记录不存在"),
@@ -28,7 +30,12 @@ public enum ErrorCode {
     USER_NOT_EXIST(3001, "用户不存在"),
     USER_STATUS_ERROR(3002, "用户状态异常，无法借阅"),
     PASSWORD_ERROR(3003, "用户名或密码错误"),
-    USER_EXIST(3004, "用户已存在");
+    USER_EXIST(3004, "用户已存在"),
+
+    // ==================== 分类相关 ====================
+    CATEGORY_NOT_EXIST(4001, "分类不存在"),
+    DEEP_CATEGORY(4002, "子类目录下不能分类"),
+    CATEGORY_EXIST(4003, "分类已存在");
 
     private final Integer code;
     private final String message;
